@@ -9,6 +9,7 @@ import StudentDashboard from "./pages/StudentDashboard";
 import StudentQuiz from "./pages/StudentQuiz";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import ParentDashboard from "./pages/ParentDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/student/quiz" element={<StudentQuiz />} />
           <Route path="/teacher" element={<TeacherDashboard />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/parent" element={<ParentDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
