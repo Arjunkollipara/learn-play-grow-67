@@ -4,8 +4,10 @@ import { Mascot } from '@/components/Mascot';
 import { SubjectCard } from '@/components/SubjectCard';
 import { ProgressBadge } from '@/components/ProgressBadge';
 import { Leaderboard } from '@/components/Leaderboard';
+import { EventsCalendar } from '@/components/EventsCalendar';
+import { VideoLearning } from '@/components/VideoLearning';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Trophy, Star, Flame, Home } from 'lucide-react';
+import { ArrowLeft, Trophy, Star, Flame, Home, Calendar, Play } from 'lucide-react';
 
 const subjects = [
   { id: 'math', subject: 'math' as const, title: 'Math', progress: 75, lessonsCompleted: 15, totalLessons: 20 },
@@ -25,6 +27,7 @@ const badges = [
 const StudentDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [mascotMessage, setMascotMessage] = useState("Let's learn something fun today!");
+  const [activeTab, setActiveTab] = useState<'subjects' | 'videos' | 'calendar'>('subjects');
 
   const handleSubjectClick = (subjectId: string) => {
     setMascotMessage(`Great choice! Let's explore ${subjectId}! 🚀`);
@@ -114,26 +117,57 @@ const StudentDashboard: React.FC = () => {
               </div>
             </section>
 
-            {/* Subjects grid */}
-            <section>
-              <h2 className="font-display text-2xl font-bold text-foreground mb-6">
-                My Subjects 📖
-              </h2>
-              <div className="grid md:grid-cols-2 gap-6">
-                {subjects.map((subject, index) => (
-                  <div
-                    key={subject.id}
-                    className="animate-slide-up"
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    <SubjectCard
-                      {...subject}
-                      onClick={() => handleSubjectClick(subject.id)}
-                    />
-                  </div>
-                ))}
-              </div>
-            </section>
+            {/* Tab Navigation */}
+            <div className="flex gap-2 mb-6">
+              {[
+                { id: 'subjects', label: 'My Subjects', icon: '📖' },
+                { id: 'videos', label: 'Video Lessons', icon: '🎬' },
+                { id: 'calendar', label: 'Calendar', icon: '📅' },
+              ].map((tab) => (
+                <Button
+                  key={tab.id}
+                  variant={activeTab === tab.id ? 'student' : 'student-outline'}
+                  size="lg"
+                  className="font-display"
+                  onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                >
+                  <span className="mr-2">{tab.icon}</span>
+                  {tab.label}
+                </Button>
+              ))}
+            </div>
+
+            {/* Content based on active tab */}
+            {activeTab === 'subjects' && (
+              <section>
+                <div className="grid md:grid-cols-2 gap-6">
+                  {subjects.map((subject, index) => (
+                    <div
+                      key={subject.id}
+                      className="animate-slide-up"
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
+                      <SubjectCard
+                        {...subject}
+                        onClick={() => handleSubjectClick(subject.id)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {activeTab === 'videos' && (
+              <section className="animate-fade-in">
+                <VideoLearning />
+              </section>
+            )}
+
+            {activeTab === 'calendar' && (
+              <section className="animate-fade-in">
+                <EventsCalendar />
+              </section>
+            )}
 
             {/* Daily challenge */}
             <section>
